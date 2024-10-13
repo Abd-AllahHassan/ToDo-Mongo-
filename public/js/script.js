@@ -107,6 +107,7 @@ function appendTaskToTable(task) {
     row.appendChild(actionsCell);
     toDoList.appendChild(row);
 }
+
 async function handleActions(event) {
     const item = event.target.closest('button');
 
@@ -146,6 +147,7 @@ async function handleActions(event) {
         
         // Update UI
         todoElement.children[1].innerText = completed ? 'Completed' : 'Pending'; // Update the status cell
+        todoElement.classList.toggle('completed'); // Toggle the 'completed' class
     }
 }
 
@@ -157,6 +159,8 @@ async function getTodos() {
         appendTaskToTable(task);
     });
 }
+
+// Function to display time ago format for task creation
 function timeAgo(timestamp) {
     const date = new Date(timestamp); // Create a Date object from the timestamp
     const now = new Date();
@@ -179,7 +183,8 @@ function timeAgo(timestamp) {
         return date.toLocaleString(); // Fallback to a full date format
     }
 }
-// Change theme function
+
+// Theme Change function
 function changeTheme(color) {
     localStorage.setItem('savedTheme', color);
     savedTheme = localStorage.getItem('savedTheme');
