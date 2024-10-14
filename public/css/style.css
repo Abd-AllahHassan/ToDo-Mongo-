@@ -61,6 +61,11 @@ body {
     width: 100%;
 }
 
+.date-time-parent
+{
+    margin-top: 1rem;
+}
+
 /* Header parent div */
 #header {
     display: flex;
