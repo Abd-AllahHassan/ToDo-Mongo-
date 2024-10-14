@@ -72,18 +72,20 @@ app.put('/api/tasks/:id', async (req, res) => {
     const updatedTask = await Task.findOneAndUpdate(
       { _id: id, sessionId }, // Ensure the sessionId matches
       { completed, description }, 
-      { new: true }
+      { new: true } // Return the updated task
     );
-    res.json(updatedTask);
+    res.json(updatedTask); // Return the updated task
   } catch (err) {
     res.status(500).json({ message: 'Error updating task' });
   }
 });
 
-// Delete a task
+
+// Delete a task// Delete a task
 app.delete('/api/tasks/:id', async (req, res) => {
   const { id } = req.params;
-  const { sessionId } = req.body; // Ensure sessionId is passed in request body
+  const { sessionId } = req.query; // Get sessionId from query parameters
+
   try {
     await Task.findOneAndDelete({ _id: id, sessionId }); // Ensure sessionId matches
     res.json({ message: 'Task deleted' });

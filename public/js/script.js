@@ -119,6 +119,7 @@ async function handleActions(event) {
         const taskId = todoElement.dataset.id;
         const sessionId = getSessionId(); // Get session ID
 
+        // Pass sessionId as a query parameter in the DELETE request
         await fetch(`/api/tasks/${taskId}?sessionId=${sessionId}`, { method: 'DELETE' });
         todoElement.remove();
     }
@@ -137,7 +138,8 @@ async function handleActions(event) {
         const taskId = todoElement.dataset.id;
         const completed = todoElement.children[1].innerText === 'Completed' ? false : true; // Toggle completion
         const sessionId = getSessionId(); // Get session ID
-
+    
+        // Send the updated status to the server
         await fetch(`/api/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
@@ -145,10 +147,12 @@ async function handleActions(event) {
             },
             body: JSON.stringify({ completed, sessionId }) // Include sessionId in the request
         });
-
-        todoElement.children[1].innerText = completed ? 'Completed' : 'Pending'; // Update the status cell
-        todoElement.classList.toggle('completed'); // Toggle the 'completed' class
+    
+        // Update the status cell and task row style
+        todoElement.children[1].innerText = completed ? 'Completed' : 'Pending'; // Update the status text
+        todoElement.classList.toggle('completed', completed); // Add 'completed' class if completed
     }
+    
 }
 
 async function getTodos() {
