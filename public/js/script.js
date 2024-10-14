@@ -45,12 +45,13 @@ async function handleSubmit(event) {
 }
 
 async function addTask(description) {
+    const sessionId = getSessionId(); // Get session ID
     const response = await fetch('/api/tasks', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ description })
+        body: JSON.stringify({ description, sessionId }) // Include sessionId in the request
     });
 
     const newTask = await response.json();
@@ -58,18 +59,20 @@ async function addTask(description) {
 }
 
 async function updateTask(id, description) {
+    const sessionId = getSessionId(); // Get session ID
     const response = await fetch(`/api/tasks/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ description, completed: false }) // Update the task description
+        body: JSON.stringify({ description, completed: false, sessionId }) // Include sessionId in the request
     });
 
     const updatedTask = await response.json();
     const taskRow = document.querySelector(`tr[data-id="${id}"]`);
     taskRow.children[0].innerText = updatedTask.description; // Update the description in the table
 }
+
 
 function appendTaskToTable(task) {
     const row = document.createElement('tr');
@@ -111,55 +114,52 @@ function appendTaskToTable(task) {
 async function handleActions(event) {
     const item = event.target.closest('button');
 
-    // Delete task
     if (item && item.classList.contains('delete-btn')) {
         const todoElement = item.closest('tr');
         const taskId = todoElement.dataset.id;
+        const sessionId = getSessionId(); // Get session ID
 
-        await fetch(`/api/tasks/${taskId}`, { method: 'DELETE' });
+        await fetch(`/api/tasks/${taskId}?sessionId=${sessionId}`, { method: 'DELETE' });
         todoElement.remove();
     }
 
-    // Update task
     if (item && item.classList.contains('update-btn')) {
         const todoElement = item.closest('tr');
         const taskId = todoElement.dataset.id;
 
-        // Populate the input field for editing
         toDoInput.value = todoElement.children[0].innerText; // Set input value to the current task
         currentTaskId = taskId; // Store the current task ID
         toDoBtn.innerText = 'Update'; // Change button text to 'Update'
     }
 
-    // Mark task as completed
     if (item && item.classList.contains('check-btn')) {
         const todoElement = item.closest('tr');
         const taskId = todoElement.dataset.id;
-
         const completed = todoElement.children[1].innerText === 'Completed' ? false : true; // Toggle completion
+        const sessionId = getSessionId(); // Get session ID
+
         await fetch(`/api/tasks/${taskId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ completed }) // Send completed status
+            body: JSON.stringify({ completed, sessionId }) // Include sessionId in the request
         });
-        
-        // Update UI
+
         todoElement.children[1].innerText = completed ? 'Completed' : 'Pending'; // Update the status cell
         todoElement.classList.toggle('completed'); // Toggle the 'completed' class
     }
 }
 
 async function getTodos() {
-    const response = await fetch('/api/tasks');
+    const sessionId = getSessionId(); // Get session ID
+    const response = await fetch(`/api/tasks?sessionId=${sessionId}`);
     const tasks = await response.json();
 
     tasks.forEach(task => {
         appendTaskToTable(task);
     });
 }
-
 // Function to display time ago format for task creation
 function timeAgo(timestamp) {
     const date = new Date(timestamp); // Create a Date object from the timestamp
@@ -213,6 +213,19 @@ function changeTheme(color) {
     });
 }
 
+// generate a session id
+function getSessionId() {
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+        sessionId = generateSessionId(); // Generate a random session ID
+        localStorage.setItem('sessionId', sessionId);
+    }
+    return sessionId;
+}
+//create a session Id
+function generateSessionId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+}
 // Display the current date and time
 const dt = new Date();
 document.getElementById("datetime").innerHTML = dt.toLocaleString();
