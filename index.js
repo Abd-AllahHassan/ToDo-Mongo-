@@ -93,3 +93,8 @@ app.delete('/api/tasks/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting task' });
   }
 });
+//new 
+app.get('public/about.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
