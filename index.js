@@ -38,10 +38,7 @@ mongoose
 app.get('/', (req, res) => {
   res.render('index'); // Renders the index.ejs template
 });
-
-app.get('/about', (req, res) => {
-  res.render('about');  // Renders about.ejs
-});
+// API Routes
 
 // Get all tasks for a specific sessionId
 app.get('/api/tasks', async (req, res) => {
