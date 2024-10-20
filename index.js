@@ -38,63 +38,61 @@ mongoose
 app.get('/', (req, res) => {
   res.render('index'); // Renders the index.ejs template
 });
-
 // API Routes
 
 // Get all tasks for a specific sessionId
 app.get('/api/tasks', async (req, res) => {
-  const { sessionId } = req.query; // Pass sessionId as a query param
-  try {
-    const tasks = await Task.find({ sessionId }); // Find tasks by sessionId
-    res.json(tasks);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching tasks' });
-  }
-});
-
-// Add a new task with sessionId
-app.post('/api/tasks', async (req, res) => {
-  const { description, sessionId } = req.body; // Ensure sessionId is passed in request body
-  try {
-    const newTask = new Task({ description, sessionId }); // Include sessionId in the new task
-    await newTask.save();
-    res.status(201).json(newTask);
-  } catch (err) {
-    res.status(500).json({ message: 'Error adding task' });
-  }
-});
-
-// Update task completion status or description
-app.put('/api/tasks/:id', async (req, res) => {
-  const { id } = req.params;
-  const { completed, description, sessionId } = req.body; // Ensure sessionId is passed
-  try {
-    const updatedTask = await Task.findOneAndUpdate(
-      { _id: id, sessionId }, // Ensure the sessionId matches
-      { completed, description }, 
-      { new: true } // Return the updated task
-    );
-    res.json(updatedTask); // Return the updated task
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating task' });
-  }
-});
-
-
-// Delete a task// Delete a task
-app.delete('/api/tasks/:id', async (req, res) => {
-  const { id } = req.params;
-  const { sessionId } = req.query; // Get sessionId from query parameters
-
-  try {
-    await Task.findOneAndDelete({ _id: id, sessionId }); // Ensure sessionId matches
-    res.json({ message: 'Task deleted' });
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting task' });
-  }
-});
+    const { sessionId } = req.query; // Pass sessionId as a query param
+    try {
+      const tasks = await Task.find({ sessionId }); // Find tasks by sessionId
+      res.json(tasks);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching tasks' });
+    }
+  });
+  
+  // Add a new task with sessionId
+  app.post('/api/tasks', async (req, res) => {
+    const { description, sessionId } = req.body; // Ensure sessionId is passed in request body
+    try {
+      const newTask = new Task({ description, sessionId }); // Include sessionId in the new task
+      await newTask.save();
+      res.status(201).json(newTask);
+    } catch (err) {
+      res.status(500).json({ message: 'Error adding task' });
+    }
+  });
+  
+  // Update task completion status or description
+  app.put('/api/tasks/:id', async (req, res) => {
+    const { id } = req.params;
+    const { completed, description, sessionId } = req.body; // Ensure sessionId is passed
+    try {
+      const updatedTask = await Task.findOneAndUpdate(
+        { _id: id, sessionId }, // Ensure the sessionId matches
+        { completed, description }, 
+        { new: true } // Return the updated task
+      );
+      res.json(updatedTask); // Return the updated task
+    } catch (err) {
+      res.status(500).json({ message: 'Error updating task' });
+    }
+  });
+  
+  
+  // Delete a task// Delete a task
+  app.delete('/api/tasks/:id', async (req, res) => {
+    const { id } = req.params;
+    const { sessionId } = req.query; // Get sessionId from query parameters
+  
+    try {
+      await Task.findOneAndDelete({ _id: id, sessionId }); // Ensure sessionId matches
+      res.json({ message: 'Task deleted' });
+    } catch (err) {
+      res.status(500).json({ message: 'Error deleting task' });
+    }
+  });
 //new 
 app.get('public/about.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'about.html'));
-});
-
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+  });

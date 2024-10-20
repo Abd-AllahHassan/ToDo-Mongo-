@@ -101,7 +101,7 @@ body {
 }
 
 .theme-selector:active {
-    transform: scale(0.95);
+    transform: scale(0.7);
 }
 
 .standard-theme {
@@ -131,13 +131,13 @@ body {
     max-width: 880px;
 }
 
-/* Standard, Light Theme title Animation */
+/* Standard, Light Theme title cursor Animation */
 #title {
     animation: animated-text 2s steps(11, end) 0.5s 1 normal both,
         animated-cursor 750ms steps(11, end) infinite;
 }
 
-/* Dark Theme title Animation */
+/* Dark Theme title cursor Animation */
 #title.darker-title {
     animation: animated-text 2s steps(11, end) 0.5s 1 normal both,
         darker-animated-cursor 750ms steps(11, end) infinite;
@@ -228,7 +228,7 @@ form input:hover {
 }
 
 form input.standard-input:hover {
-    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 form input.light-input:hover {
@@ -256,6 +256,9 @@ form button {
 
 button:hover {
     cursor: pointer;
+    box-shadow: rgba(15, 3, 32, 0.973) 0 0 5px;
+    transform: scale(1.03);
+    transition: box-shadow 200ms ease, transform 200ms ease-in-out;
 }
 
 /* Button themes */
@@ -268,6 +271,7 @@ button.standard-button:hover {
     background-color: white;
     box-shadow: #fff8 0 0 10px;
 }
+
 
 button.light-button {
     background-color: #1a150e;
@@ -288,6 +292,7 @@ button.darker-button:hover {
     background-color: #001f2930;
 }
 
+/* Update Button */
 .update-btn {
     width: 38px;
     height: 38px;
@@ -300,34 +305,7 @@ button.darker-button:hover {
     margin: 5px 2px 5px 3px;
 }
 
-/* Tasks Parent Div */
-#myUnOrdList {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 1200px;
-}
-
-/* List of tasks (ul) */
-.todo-list {
-    min-width: 25%;
-    list-style: none;
-}
-
-.todo {
-    margin: 1rem;
-    font-size: 19px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.35em 0.5em;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 12px;
-    transition: background-color 200ms ease-in-out;
-}
-
+/* Completed and Delete Buttons */
 .todo li {
     padding: 7px;
     font-size: 20px;
@@ -348,39 +326,10 @@ button.darker-button:hover {
     margin: 5px 3px;
 }
 
-.todo-item {
-    padding: 0rem 0.5rem;
-}
-
-.fa-trash,
-.fa-check {
-    pointer-events: none;
-}
-
 .completed {
     transition: 0.2s;
     text-decoration: line-through;
     opacity: 0.5;
-}
-
-.fall {
-    transition: 1s;
-    transform: translateY(45rem) rotateZ(45deg);
-    opacity: 0;
-}
-
-/* Task themes */
-.standard-todo {
-    background-color: rgb(26, 27, 27);
-    color: #f0f0f0;
-}
-
-.light-todo {
-    background-color: #AEB1B4;
-}
-
-.darker-todo {
-    background-color: #01394c;
 }
 
 /* Github Link Icon */
@@ -442,7 +391,8 @@ button.darker-button:hover {
 }
 
 .about-page a:hover {
-    opacity: 0.5;
+    opacity: 0.7;
+    transition: opacity 200ms ease;
 }
 
 /* Responsive design */
@@ -525,7 +475,7 @@ button.darker-button:hover {
     }
 }
 
-/* Table Styles */
+/* Tasks Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
